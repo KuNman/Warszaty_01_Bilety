@@ -51,8 +51,6 @@
             <input type="number" name="price" min="0" step="0.01" />
         </p>
         
-        <p class="indication">Pola z
-            <span class="required"> * </span>są wymagane</p>
             <input type="submit" value=" Rezerwuj! " />
 
     </form>
