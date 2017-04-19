@@ -1,7 +1,12 @@
 <?php
 
-include 'includes/airports.php';
+require_once __DIR__ . '/vendor/autoload.php';
+$faker = Faker\Factory::create();
+use NumberToWords\NumberToWords;
+$numberToWords = new NumberToWords();
+$currencyTransformer = $numberToWords->getCurrencyTransformer('pl');
 
+include 'includes/airports.php';
 
 if ($_POST['from'] != $_POST['to']) {
     if (isset($_POST['year']) && 
@@ -32,8 +37,6 @@ if ($_POST['from'] != $_POST['to']) {
          $hrTo = $hr + $_POST['lenghthrs'];
          $dateL->setTime($hrTo, $mnt);
          $dateL->setTimezone(new DateTimeZone($toTmz));
-         
-
     }
 } else {
     echo 'Popełniłeś błąd...';
@@ -46,7 +49,6 @@ if ($_POST['from'] != $_POST['to']) {
 	<title>Table Style</title>
 	<meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; width=device-width;">
 </head>
-
 <body>
 <div class="table-title">
 <h3>Szczegóły rezerwacji : </h3>
@@ -54,6 +56,8 @@ if ($_POST['from'] != $_POST['to']) {
 <table class="table-fill">
 <thead>
 <tr>
+<th class="text-center">Imię</th>
+<th class="text-center">Nazwisko</th>
 <th class="text-center">Wylot</th>
 <th class="text-center">Przylot</th>
 <th class="text-center">Czas lotu</th>
@@ -62,6 +66,16 @@ if ($_POST['from'] != $_POST['to']) {
 </thead>
 <tbody class="table-hover">
 <tr>
+    <td class="text-center">
+        <?php
+        echo $faker->firstName;
+        ?>
+    </td>
+    <td class="text-center">
+        <?php
+        echo $faker->lastName;
+        ?>
+    </td>
     <td class="text-center">
         <?php
         echo $_POST['from'] . ' ('. $fromCd . ')' . '</br>' . 'Data: ';
@@ -81,7 +95,9 @@ if ($_POST['from'] != $_POST['to']) {
     </td>
     <td class="text-center">
         <?php
-        echo $_POST['price'] . ' PLN';
+        echo $_POST['price'] . ' PLN' . '</br>' ;
+        $slownie = $_POST['price'] * 100;
+        echo '(' . $currencyTransformer->toWords($slownie, 'PLN') . ')';
         ?>
     </td>
 </tr> 
