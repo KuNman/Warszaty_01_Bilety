@@ -1,74 +1,50 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  if ($_POST[1] != $_POST[2] &&
-      $_POST[1] != $_POST[3] &&
-      $_POST[1] != $_POST[4] &&
-      $_POST[1] != $_POST[5] &&
-      $_POST[1] != $_POST[6] &&
-      $_POST[2] != $_POST[1] &&
-      $_POST[2] != $_POST[3] &&
-      $_POST[2] != $_POST[4] &&
-      $_POST[2] != $_POST[5] &&
-      $_POST[2] != $_POST[6] &&
-      $_POST[3] != $_POST[1] &&
-      $_POST[3] != $_POST[2] &&
-      $_POST[3] != $_POST[4] &&
-      $_POST[3] != $_POST[5] &&
-      $_POST[3] != $_POST[6] &&
-      $_POST[4] != $_POST[1] &&
-      $_POST[4] != $_POST[2] &&
-      $_POST[4] != $_POST[3] &&
-      $_POST[4] != $_POST[5] &&
-      $_POST[4] != $_POST[6] &&  
-      $_POST[5] != $_POST[1] &&
-      $_POST[5] != $_POST[2] &&
-      $_POST[5] != $_POST[3] &&
-      $_POST[5] != $_POST[4] &&
-      $_POST[5] != $_POST[6] &&  
-      $_POST[6] != $_POST[1] &&
-      $_POST[6] != $_POST[2] &&
-      $_POST[6] != $_POST[3] &&
-      $_POST[6] != $_POST[4] &&
-      $_POST[6] != $_POST[5]
+    $checkUnique = array_unique($_POST);
+    $amount = count($checkUnique);
+    if ($amount == 6
      ) {
-         $lotto1 = mt_rand(1, 49);
-         $lotto2 = mt_rand(1, 49);
-         $lotto3 = mt_rand(1, 49);
-         $lotto4 = mt_rand(1, 49);
-         $lotto5 = mt_rand(1, 49);
-         $lotto6 = mt_rand(1, 49);
+         
+         
+         $lottoArray = array();
+         for($i = 1; $i <= 6; )
+            {
+               $rand = rand(1, 49);
+               if(!in_array($rand, $lottoArray))
+            {
+               $lottoArray[] = $rand;
+               $i++;
+            }
+}
+         
          echo 'Wybrane liczby to : ' . $_POST[1] . ' ' . $_POST[2] . ' ' .
                  $_POST[3] . ' ' . $_POST[4] . ' ' . $_POST[5] . ' ' . $_POST[6] . '</br>';
-         echo 'Wylosowane liczby to : ' .  $lotto1 . ' ' . $lotto2 . ' ' .
-                 $lotto3 . ' ' . $lotto4 . ' ' . $lotto5 . ' ' . $lotto6;
+         echo 'Wylosowane liczby to : ' .  $lottoArray[0] . ' ' .  $lottoArray[1] . ' ' . $lottoArray[2]
+                 . ' ' . $lottoArray[3] . ' ' . $lottoArray[4] . ' ' . $lottoArray[5] . '</br>';
+ 
+     
+         $won = array_intersect($lottoArray, $checkUnique);
          
-         $lottoArray = [$lotto1, $lotto2, $lotto3, $lotto4, $lotto5, $lotto6];
+         $wonCount = count($won);
+         if ($wonCount == 0) {
+             echo 'Nic nie wygrałeś :(';
+         } elseif ($wonCount == 1) {
+             echo 'Wygrałeś 50zł!';
+         } elseif ($wonCount == 2) {
+             echo 'Wygrałeś 100zł!';
+         } elseif ($wonCount == 3) {
+             echo 'Wygrałeś 200zł!';
+         } elseif ($wonCount == 4) {
+             echo 'Wygrałeś 500zł!';
+         } elseif ($wonCount == 5) {
+             echo 'Wygrałeś 1000zł!';
+         } elseif ($wonCount == 6) {
+             echo 'Wygrałeś 2500zł!';
+         }
          
-         $same = (array_unique(array_merge($_POST, $lottoArray)));
-         $result = array_count_values($same);
-         
-         foreach ($result as $key => $value) {
-             
-             if ($value == 1) {
-                 echo '<br>' . 'Nic nie wygrałeś.' . '<br>';
-                 break;
-             }             
-             elseif ($value == 2) {
-                 echo 'Wygrałeś dwójkę - 50zł.';
-             }
-             elseif ($value == 3) {
-                 echo 'Wygrałeś trójkę - 500zł.';
-             }
-             elseif ($value == 4) {
-                 echo 'Wygrałeś czwórkę - 5 000zł.';
-             }
-             elseif ($value == 5) {
-                 echo 'Wygrałeś piątkę - 50 000zł.';
-             }
-             elseif ($value == 6) {
-                 echo 'Wygrałeś szóstkę - 500 000zł.';
-             } 
-         }  
-  }
+     }
+} elseif ($amount < 6) {
+    echo 'Wybrałeś te same liczby. Liczby muszą być unikatowe. ' . 
+            "<a href='index.php'>Wybierz ponownie</a>";
 }
-?> 
+?>
