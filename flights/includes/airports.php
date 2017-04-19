@@ -171,9 +171,5 @@ $airports = [
         'code'     => 'SSA',
         'timezone' => 'America/Bahia',
     ],
-];
-
-
-
-       
+];       
        ?>
