@@ -1,3 +1,7 @@
+<?php
+include 'includes/visits.php';
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
