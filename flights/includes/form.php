@@ -48,7 +48,7 @@
         </p>
         <p>
             <label for ="price" > Cena :
-            <input type="number" name="price" min="0" step="0.01" />
+            <input type="number" name="price" min="0" step="1" />
         </p>
         
             <input type="submit" value=" Rezerwuj! " />

@@ -6,6 +6,7 @@ use NumberToWords\NumberToWords;
 $numberToWords = new NumberToWords();
 $currencyTransformer = $numberToWords->getCurrencyTransformer('pl');
 
+
 include 'includes/airports.php';
 
 if ($_POST['from'] != $_POST['to']) {
@@ -22,6 +23,10 @@ if ($_POST['from'] != $_POST['to']) {
          $time = explode(':', $_POST['time']);
          $hr = $time[0];
          $mnt = $time[1];
+         $from = $_POST['from'];
+         $to = $_POST['to'];
+         $lenghthrs = $_POST['lenghthrs'];
+         $price = $_POST['price'];
          $fromTmz = array_column($airports, 'timezone', 'name')[$_POST['from']];
          $toTmz = array_column($airports, 'timezone', 'name')[$_POST['to']];
          $fromCd = array_column($airports, 'code', 'name')[$_POST['from']];
@@ -41,67 +46,107 @@ if ($_POST['from'] != $_POST['to']) {
 } else {
     echo 'Popełniłeś błąd...';
 }
-?>
-<html lang="en">
+
+$mpdf = new mPDF();
+$mpdf->WriteHTML('<!DOCTYPE html>
+    <html lang="en">
 <head>  
         <link rel="stylesheet" type="text/css" href="styleTable.css" />
 	<meta charset="utf-8" />
-	<title>Table Style</title>
+	<title>Podsumowanie</title>
 	<meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; width=device-width;">
 </head>
-<body>
 <div class="table-title">
 <h3>Szczegóły rezerwacji : </h3>
 </div>
-<table class="table-fill">
-<thead>
-<tr>
-<th class="text-center">Imię</th>
-<th class="text-center">Nazwisko</th>
-<th class="text-center">Wylot</th>
-<th class="text-center">Przylot</th>
-<th class="text-center">Czas lotu</th>
-<th class="text-center">Cena</th>
-</tr>
-</thead>
-<tbody class="table-hover">
-<tr>
-    <td class="text-center">
-        <?php
-        echo $faker->firstName;
-        ?>
-    </td>
-    <td class="text-center">
-        <?php
-        echo $faker->lastName;
-        ?>
-    </td>
-    <td class="text-center">
-        <?php
-        echo $_POST['from'] . ' ('. $fromCd . ')' . '</br>' . 'Data: ';
-        echo $dateF->format('d.m.Y H:m')
-        ?>
-    </td>
-    <td class="text-center">
-        <?php
-        echo $_POST['to'] . ' ('. $toCd . ')' .'</br>' . 'Data: ';
-        echo $dateL->format('d.m.Y H:m');
-        ?>
-    </td>
-    <td class="text-center">
-        <?php
-        echo $_POST['lenghthrs'] . ' h';
-        ?>
-    </td>
-    <td class="text-center">
-        <?php
-        echo $_POST['price'] . ' PLN' . '</br>' ;
-        $slownie = $_POST['price'] * 100;
-        echo '(' . $currencyTransformer->toWords($slownie, 'PLN') . ')';
-        ?>
-    </td>
-</tr> 
-</tbody>
+<body>
+
+<table style="width:100%">
+  <tr>
+    <th class="text-center">Imię</th>
+    <th class="text-center">Nazwisko</th>
+    <th class="text-center">Wylot</th>
+    <th class="text-center">Przylot</th>
+    <th class="text-center">Czas lotu</th>
+    <th class="text-center">Cena</th>
+  </tr>
+  <tr>
+      <td class="text-center">' . 
+        $faker->firstName . 
+    '</td>
+      <td class="text-center">' . 
+        $faker->lastName . 
+    '</td>        
+    <td class="text-center">' . 
+        $from . ' ('. $fromCd . ') '. '</br>' . $dateF->format('d.m.Y H:m') .
+    '</td>
+    <td class="text-center">' . 
+        $to . ' ('. $toCd . ') '. '</br>' . $dateL->format('d.m.Y H:m') .
+    '</td>
+    <td class="text-center">' . 
+        $lenghthrs . 'h' .
+    '</td>  
+    <td class="text-center">' . 
+        $price . ' PLN ' . '</br>' . ' (' . $currencyTransformer->toWords($price*100, 'PLN') . ')' .
+    '</td>           
+  </tr>
 </table>
 </body>
-</html>
+</html>');
+$mpdf->Output('flight_ticket.pdf', 'D');
+
+$pdf = '<!DOCTYPE html>
+    <html lang="en">
+<head>  
+        <link rel="stylesheet" type="text/css" href="styleTable.css" />
+	<meta charset="utf-8" />
+	<title>Podsumowanie</title>
+	<meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; width=device-width;">
+</head>
+<div class="table-title">
+<h3>Szczegóły rezerwacji : </h3>
+</div>
+<body>
+
+<table style="width:100%">
+  <tr>
+    <th class="text-center">Imię</th>
+    <th class="text-center">Nazwisko</th>
+    <th class="text-center">Wylot</th>
+    <th class="text-center">Przylot</th>
+    <th class="text-center">Czas lotu</th>
+    <th class="text-center">Cena</th>
+  </tr>
+  <tr>
+      <td class="text-center">' . 
+        $faker->firstName . 
+    '</td>
+      <td class="text-center">' . 
+        $faker->lastName . 
+    '</td>        
+    <td class="text-center">' . 
+        $from . ' ('. $fromCd . ')'. '</br>' . $dateF->format('d.m.Y H:m') .
+    '</td>
+    <td class="text-center">' . 
+        $to . ' ('. $toCd . ')'. '</br>' . $dateL->format('d.m.Y H:m') .
+    '</td>
+    <td class="text-center">' . 
+        $lenghthrs . 'h' .
+    '</td>  
+    <td class="text-center">' . 
+        $price . ' PLN ' . '</br>' . ' (' . $currencyTransformer->toWords($price*100, 'PLN') . ')' .
+    '</td>           
+  </tr>
+</table>
+</body>
+</html>';
+echo $pdf;
+echo '<body>
+<form action="print.php" method="POST">
+<button type="submit" value="Submit">Print</button>
+</form>
+</body>';
+?>
+
+
+
