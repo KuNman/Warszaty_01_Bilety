@@ -1,4 +1,3 @@
-
 <div id="content">
     <h1><?php include 'includes/visits.php'; ?></h1>
         <?php include 'includes/airports.php'; ?>
@@ -13,10 +12,10 @@
         foreach ($name as $value) {
            echo "<option name=" . $value . '" '. '">' . $value . "</option>";
         }
-        ?> 
+        ?>
         </p>
         </select>
-        </label> 
+        </label>
         </p>
         <p>
             <label for="to" > Do :
@@ -30,7 +29,7 @@
         ?>
         </p>
         </select>
-        </label> 
+        </label>
         </p>
         <p>
             <label for ="datetime-day" > Dzień wylotu :
@@ -50,7 +49,7 @@
             <label for ="price" > Cena :
             <input type="number" name="price" min="0" step="1" />
         </p>
-        
+
             <input type="submit" value=" Rezerwuj! " />
 
     </form>

@@ -5,8 +5,6 @@ $faker = Faker\Factory::create();
 use NumberToWords\NumberToWords;
 $numberToWords = new NumberToWords();
 $currencyTransformer = $numberToWords->getCurrencyTransformer('pl');
-
-
 include 'includes/airports.php';
 
 if ($_POST['from'] != $_POST['to']) {
@@ -49,18 +47,17 @@ if ($_POST['from'] != $_POST['to']) {
 
 $mpdf = new mPDF();
 $mpdf->WriteHTML('<!DOCTYPE html>
-    <html lang="en">
-<head>
-        <link rel="stylesheet" type="text/css" href="styleTable.css" />
-	<meta charset="utf-8" />
-	<title>Podsumowanie</title>
-	<meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; width=device-width;">
+<html lang="en">
+    <head>
+    <link rel="stylesheet" type="text/css" href="styleTable.css" />
+	  <meta charset="utf-8" />
+	  <title>Podsumowanie</title>
+	  <meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; width=device-width;">
 </head>
 <div class="table-title">
 <h3>Szczegóły rezerwacji : </h3>
 </div>
 <body>
-
 <table style="width:100%">
   <tr>
     <th class="text-center">Imię</th>
